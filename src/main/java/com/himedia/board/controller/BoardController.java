@@ -3,6 +3,7 @@ package com.himedia.board.controller;
 import com.himedia.board.dto.BoardDto;
 import com.himedia.board.dto.Paging;
 import com.himedia.board.service.BoardService;
+import com.himedia.board.service.S3UploadService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,6 +32,9 @@ public class BoardController {
 
     @Autowired
     ServletContext context;
+
+    @Autowired
+    S3UploadService sus;
 
     @GetMapping("/main")
     public ModelAndView mainPage(HttpServletRequest request) {
@@ -69,6 +73,7 @@ public class BoardController {
         return "board/selectimg";
     }
 
+    /*
     @PostMapping("/fileupload")
     public String fileupload(@RequestParam("image") MultipartFile file, HttpServletRequest request, Model model) {
         String path = context.getRealPath("/images");
@@ -88,6 +93,24 @@ public class BoardController {
         }
         model.addAttribute("image", filename);
         model.addAttribute("savefilename", savefilename);
+        return "board/completeUpload";
+    }
+    */
+
+    @PostMapping("/fileupload")
+    public String fileupload(@RequestParam("image") MultipartFile file, HttpServletRequest request, Model model) {
+        try {
+            // 파일 업로드하고 그 경로와 파일 이름을 리턴
+            String uploadFilePathName = sus.saveFile(file);
+            String filename = file.getOriginalFilename();
+            model.addAttribute("image", filename);
+            model.addAttribute("savefilename", uploadFilePathName);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         return "board/completeUpload";
     }
 
@@ -163,14 +186,14 @@ public class BoardController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("dto", bs.getBoardOne(num));
         mav.addObject("oldfilename", bs.getBoardOne(num).getSavefilename());
-        mav.setViewName("changeBoard");
+        mav.setViewName("board/changeBoard");
         return mav;
     }
 
     @PostMapping("/updateBoard")
     public String updateBoard(@ModelAttribute("dto") @Valid BoardDto boarddto, BindingResult result, @RequestParam("oldfilename") String oldfilename, Model model) {
         model.addAttribute("oldfilename", oldfilename);
-        String url = "changeBoard";
+        String url = "board/changeBoard";
         BoardDto bdto = bs.getBoardOne(boarddto.getNum());
 
         if (result.hasFieldErrors("pass")) {

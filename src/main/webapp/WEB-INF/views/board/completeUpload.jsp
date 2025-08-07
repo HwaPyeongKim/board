@@ -12,7 +12,7 @@
 </head>
 <body>
 <script type="text/javascript">
-  opener.document.getElementById('previewing').setAttribute('src','/images/'+'${savefilename}');
+  opener.document.getElementById('previewing').setAttribute('src','${savefilename}');
   opener.document.getElementById('previewing').style.display='inline';
 
   opener.document.insertBoard.image.value='${image}';

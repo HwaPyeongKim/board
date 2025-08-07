@@ -56,7 +56,7 @@
                     </c:when>
                     <c:otherwise>
                         <div style="flex: 4;">
-                            <img src="/images/${oldfilename}" width="150">
+                            <img src="${oldfilename}" width="150">
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -81,7 +81,7 @@
                     </c:when>
                     <c:otherwise>
                         <div style="flex: 4;">
-                            <img src="/images/${dto.savefilename}" id="previewing" width="150">
+                            <img src="${dto.savefilename}" id="previewing" width="150">
                         </div>
                         <input type="hidden" name="image" value="${dto.image}" />
                         <input type="hidden" name="savefilename" value="${dto.savefilename}" />

@@ -52,7 +52,7 @@
             <img src="/images/noname.jpg" width="250" alt="이미지가 없습니다." />
           </c:when>
           <c:otherwise>
-            <img src="/images/${board.savefilename}" width="350" alt="${board.image}" />
+            <img src="${board.savefilename}" width="350" alt="${board.image}" />
           </c:otherwise>
         </c:choose>
       </div>
